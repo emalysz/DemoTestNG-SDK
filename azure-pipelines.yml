@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: BrowserStackConfig@0
+  inputs:
+    BrowserStackServiceEndPoint: 'BST'
+- script: |
+      # 1. Upload app to BrowserStack
+      # 2. Parse app_url
+      # 3. Upload test suite to BrowserStack 
+      # 4. Execute test on BrowserStack 
+      curl -u "${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}" \
+      -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
+      -d '{"app": "bs://b128546a7ccd85d28c8f53d767fc2c20028e9708", "testSuite": "bs://fd0b2ebbab6e6b912759ed829fffb166bb11bef3",  "devices": ["iPhone 14-16"], "singleRunnerInvocation": "true"}' \
+      -H "Content-Type: application/json"
+
